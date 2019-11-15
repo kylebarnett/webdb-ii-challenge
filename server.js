@@ -57,4 +57,19 @@ server.put('/:id', (req, res) => {
     })
 })
 
+server.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  db('cars').where({ id }).del()
+    .then(car => {
+      if (car) {
+        res.status(204).json({ message: 'car deleted.' })
+      } else {
+        res.status(404).json({ message: 'ID does not exist.' })
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: 'Error deleting car.' })
+    })
+})
+
 module.exports = server;
