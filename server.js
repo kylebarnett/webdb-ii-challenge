@@ -26,7 +26,7 @@ server.get('/:id', (req, res) => {
       }
     })
     .catch(err => {
-      res.status(500).json({ message: 'Error getting ID.' })
+      res.status(500).json({ message: 'Error getting specific car.' })
     })
 })
 
@@ -38,6 +38,22 @@ server.post('/', (req, res) => {
     })
     .catch(err => {
       res.status(500).json({ message: 'Error creating car entry.' })
+    })
+})
+
+server.put('/:id', (req, res) => {
+  const { id } = req.params;
+  const bodyInfo = req.body;
+  db('cars').where({ id }).update(bodyInfo)
+    .then(car => {
+      if (car) {
+        res.status(201).json(car)
+      } else {
+        res.status(404).json({ message: `${id} not found to updated.` })
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: 'Error updating car.' })
     })
 })
 
